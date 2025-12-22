@@ -1,3 +1,3 @@
 # notestack
 
-on building stage..
+on building stage...
