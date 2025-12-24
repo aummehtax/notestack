@@ -1,38 +1,77 @@
 import { useEffect, useState } from "react";
+import { FileText, FolderTree, Zap, Cloud, Lock, Search } from "lucide-react";
+import LandingFaq from "./LandingFaq";
 
 const navigation = [
-  { name: "Features", href: "#" },
+  { name: "Features", href: "#features" },
   { name: "Demo", href: "#" },
   { name: "Pricing", href: "#" },
 ];
 
+const features = [
+  {
+    icon: FileText,
+    title: "Rich Text Editor",
+    description:
+      "Create beautiful notes with formatting, lists, and images. Express your ideas exactly how you want.",
+  },
+  {
+    icon: FolderTree,
+    title: "Smart Organization",
+    description:
+      "Organize notes with tags, folders, and categories. Find everything instantly when you need it.",
+  },
+  {
+    icon: Zap,
+    title: "Lightning Fast",
+    description:
+      "Capture your thoughts instantly with our optimized interface. No lag, just pure productivity.",
+  },
+  {
+    icon: Cloud,
+    title: "Share with Others",
+    description: "Collaborate by sharing notes with friends and teammates.",
+    comingSoon: true,
+  },
+  {
+    icon: Lock,
+    title: "Secure & Private",
+    description:
+      "Your notes stay private and safe. Control who can access your content with password protection.",
+  },
+  {
+    icon: Search,
+    title: "Powerful Search",
+    description:
+      "Find any note in seconds with smart search. Search by content, tags, or date created.",
+  },
+];
+
 export default function Example() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [darkAndLight, setDarkAndLight] = useState(
-    
-   () => {
-     //initialize from localstorage on first render
+  const [darkAndLight, setDarkAndLight] = useState(() => {
+    //initialize from localstorage on first render
     const saved = localStorage.getItem("darkMode");
     return saved !== null ? saved === "true" : true;
-   }
-  );
+  });
+  const [videoModalOpen, setVideoModalOpen] = useState(false);
 
   useEffect(() => {
-    localStorage.setItem("darkMode" , darkAndLight.toString())
-  },[darkAndLight])
+    localStorage.setItem("darkMode", darkAndLight.toString());
+  }, [darkAndLight]);
 
   return (
     <div
       className={`${
         darkAndLight ? "bg-black" : "bg-white"
-      } select-none min-h-screen pb-30`}
+      } select-none min-h-screen pb-7`}
     >
       <header className="absolute inset-x-0 top-0 z-50">
         <nav
           aria-label="Global"
           className="flex items-center justify-between p-6 lg:px-8"
         >
-          <div className="flex lg:flex-1">
+          <div className="flex lg:flex-1 items-center">
             <a href="#" className="-m-1.5 p-1.5">
               <img
                 alt="NoteStack"
@@ -40,6 +79,13 @@ export default function Example() {
                 className="h-8 w-auto"
               />
             </a>
+            <div
+              className={`text-[18px] ${
+                darkAndLight ? "text-white" : "text-[#272d3b]"
+              } font-bold`}
+            >
+              NoteStack
+            </div>
           </div>
 
           {/* Mobile menu button */}
@@ -51,9 +97,39 @@ export default function Example() {
             >
               <span className="sr-only">Open main menu</span>
               {darkAndLight ? (
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-menu-icon lucide-menu"><path d="M4 5h16"/><path d="M4 12h16"/><path d="M4 19h16"/></svg>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="#ffffff"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="lucide lucide-menu-icon lucide-menu"
+                >
+                  <path d="M4 5h16" />
+                  <path d="M4 12h16" />
+                  <path d="M4 19h16" />
+                </svg>
               ) : (
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#111828" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-menu-icon lucide-menu"><path d="M4 5h16"/><path d="M4 12h16"/><path d="M4 19h16"/></svg>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="#111828"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="lucide lucide-menu-icon lucide-menu"
+                >
+                  <path d="M4 5h16" />
+                  <path d="M4 12h16" />
+                  <path d="M4 19h16" />
+                </svg>
               )}
             </button>
           </div>
@@ -62,6 +138,11 @@ export default function Example() {
           <div className="hidden lg:flex lg:items-center lg:gap-x-8">
             {navigation.map((item) => (
               <a
+                onClick={(e) => {
+                  if (e.target.innerHTML == "Demo") {
+                    setVideoModalOpen(true);
+                  }
+                }}
                 key={item.name}
                 href={item.href}
                 className={`text-sm font-semibold ${
@@ -73,7 +154,9 @@ export default function Example() {
             ))}
 
             <div
-              onClick={() => { setDarkAndLight(!darkAndLight)}}
+              onClick={() => {
+                setDarkAndLight(!darkAndLight);
+              }}
               className="cursor-pointer"
             >
               {darkAndLight ? (
@@ -143,16 +226,25 @@ export default function Example() {
             />
 
             <div
-              className={`fixed inset-y-0 right-0 z-50 w-full overflow-y-auto  ${darkAndLight ? "bg-black" : "bg-white"} px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10`}
+              className={`fixed inset-y-0 right-0 z-50 w-full overflow-y-auto  ${
+                darkAndLight ? "bg-black" : "bg-white"
+              } px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10`}
             >
               <div className="flex items-center justify-between">
-                <a href="#" className="-m-1.5 p-1.5">
-                  <span className="sr-only">NoteStack</span>
+                <a href="#" className="-m-1.5 p-1.5 flex items-center">
+                  {/* <span className="sr-only">NoteStack</span> */}
                   <img
                     alt="NoteStack"
                     src="https://res.cloudinary.com/aumcloud003/image/upload/v1766398828/Untitled_design-Photoroom_b2jhwv.png"
                     className="h-8 w-auto"
                   />
+                  <div
+                    className={`text-[18px] ${
+                      darkAndLight ? "text-white" : "text-[#272d3b]"
+                    } font-bold`}
+                  >
+                    NoteStack
+                  </div>
                 </a>
                 <button
                   type="button"
@@ -186,12 +278,17 @@ export default function Example() {
                   <div className="space-y-2 py-6">
                     {navigation.map((item) => (
                       <a
+                        onClick={(e) => {
+                          setMobileMenuOpen(false);
+                          if (e.target.innerHTML == "Demo") {
+                            setVideoModalOpen(true);
+                          }
+                        }}
                         key={item.name}
                         href={item.href}
                         className={`-mx-3 block rounded-lg px-3 py-2 text-base font-semibold ${
                           darkAndLight ? "text-white" : "text-gray-700"
                         }`}
-                        onClick={() => setMobileMenuOpen(false)}
                       >
                         {item.name}
                       </a>
@@ -285,16 +382,30 @@ export default function Example() {
 
         <div className="mx-auto max-w-2xl py-32 sm:py-48 lg:py-56">
           <div className="hidden sm:mb-8 sm:flex sm:justify-center">
-            <div className={`relative rounded-full px-3 py-1 text-sm leading-6 ${darkAndLight ? "text-white  ring-[#ffffff34]  hover:ring-[#ffffff49]" : "text-gray-500 ring-gray-900/10  hover:ring-gray-900/20"} ring-1 transition-colors`}>
+            <div
+              className={`relative rounded-full px-3 py-1 text-sm leading-6 ${
+                darkAndLight
+                  ? "text-white  ring-[#ffffff34]  hover:ring-[#ffffff49]"
+                  : "text-gray-500 ring-gray-900/10  hover:ring-gray-900/20"
+              } ring-1 transition-colors`}
+            >
               Early access available - Limited spots.
             </div>
           </div>
 
           <div className="text-center">
-            <h1 className={`text-4xl font-bold tracking-tight ${darkAndLight ? "text-white" : "text-gray-900"} sm:text-6xl`}>
+            <h1
+              className={`text-4xl font-bold tracking-tight ${
+                darkAndLight ? "text-white" : "text-gray-900"
+              } sm:text-6xl`}
+            >
               Notes without Noise
             </h1>
-            <p className={`mt-6 text-lg leading-8 ${darkAndLight ? "text-white" : "text-gray-600"} `}>
+            <p
+              className={`mt-6 text-lg leading-8 ${
+                darkAndLight ? "text-white" : "text-gray-600"
+              } `}
+            >
               A minimalist workspace for focused minds. Capture thoughts,
               organize ideas, and boost productivity without distractions.
               Everything you need, nothing you don't.
@@ -308,7 +419,10 @@ export default function Example() {
               </a>
               <a
                 href="#"
-                className={`text-sm font-semibold ${darkAndLight ? "text-white" : "text-gray-900"} hover:text-gray-600 transition-colors`}
+                onClick={() => setVideoModalOpen(true)}
+                className={`text-sm font-semibold ${
+                  darkAndLight ? "text-white" : "text-gray-900"
+                } hover:text-gray-600 transition-colors`}
               >
                 Watch demo <span aria-hidden="true">→</span>
               </a>
@@ -365,84 +479,127 @@ export default function Example() {
         </a>
       </div>
 
+      <div id="features" className="w-full">
+        {/* Container */}
+        <div className="mx-auto w-full max-w-7xl px-5 pt-16 md:px-10 md:pt-20">
+          {/* Title */}
+          <div className="flex flex-col items-center text-center">
+            <h2
+              className={`text-3xl font-bold md:text-5xl ${
+                darkAndLight ? "text-[#ffffff]" : "text-[#111828]"
+              }`}
+            >
+              Everything you need to capture your ideas
+            </h2>
+            <p
+              className={`mb-7 mt-7 max-w-2xl text-base ${
+                darkAndLight ? "text-[#f9f9f9]" : "text-[#515c6c]"
+              }  md:mb-12 md:text-lg`}
+            >
+              Powerful features designed to help you write, organize, and find
+              your notes effortlessly. Whether you're a student, professional,
+              or creative, we've got you covered.
+            </p>
+          </div>
 
+          {/* Features Grid */}
+          <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3 md:gap-8">
+            {features.map((feature, index) => {
+              const Icon = feature.icon;
+              return (
+                <div
+                  key={index}
+                  className={`group grid gap-6 rounded-xl border   p-8 md:p-10 transition-all duration-300 hover:shadow-lg cursor-pointer ${
+                    darkAndLight
+                      ? "bg-black border-gray-600 hover:border-gray-300"
+                      : "bg-white border-gray-200  hover:border-gray-700"
+                  }`}
+                >
+                  <div className="inline-flex h-16 w-16 items-center justify-center rounded-full bg-[#fe523b18] text-[#fe523b] group-hover:bg-[#fe523b28] transition-colors">
+                    <Icon size={32} />
+                  </div>
+                  <div>
+                    <div className="flex items-center gap-2 mb-2">
+                      <h3
+                        className={`text-xl font-semibold ${
+                          darkAndLight ? "text-gray-100" : "text-gray-900"
+                        }`}
+                      >
+                        {feature.title}
+                      </h3>
+                      {feature.comingSoon && (
+                        <span
+                          className={`text-xs font-medium ${
+                            darkAndLight
+                              ? "text-gray-100 bg-[#fe523bb0]"
+                              : "text-gray-800 bg-[#fe523b28]"
+                          }  px-2 py-1 rounded-full`}
+                        >
+                          Coming Soon
+                        </span>
+                      )}
+                    </div>
+                    <p
+                      className={`text-sm  ${
+                        darkAndLight ? "text-gray-300" : "text-gray-800"
+                      } leading-relaxed`}
+                    >
+                      {feature.description}
+                    </p>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </div>
 
-     <div className="w-full">
-		  {/* Container */}
-		  <div className="mx-auto w-full max-w-7xl px-5 py-16 md:px-10 md:py-20">
-		    {/* Title */}
-		    <div className="flex flex-col items-center text-center">
-		      <h2 className="text-3xl font-bold md:text-5xl">
-		        Make every step user-centric
-		      </h2>
-		      <p className="mb-8 mt-4 max-w-xl text-base text-gray-500 md:mb-12 md:text-lg">
-		        Lorem ipsum dolor sit amet consectetur adipiscing elit ut aliquam,
-		        purus sit amet luctus magna fringilla urna
-		      </p>
-		    </div>
-		    {/* Features Content */}
-		    <div className="grid gap-5 sm:grid-cols-2 md:grid-cols-3 md:gap-4">
-		      {/* Features Item */}
-		      <div className="grid gap-6 rounded-md border border-solid border-gray-300 p-8 md:p-10">
-		        <img src="https://firebasestorage.googleapis.com/v0/b/flowspark-1f3e0.appspot.com/o/Tailspark%20Images%2FPlaceholder%20Image.svg?alt=media&token=375a1ea3-a8b6-4d63-b975-aac8d0174074" alt="" className="inline-block h-16 w-16 object-cover rounded-full " />
-		        <h3 className="text-xl font-semibold">Support</h3>
-		        <p className="text-sm text-gray-500">
-		          Lorem ipsum dolor sit amet consectetur adipiscing elit ut aliquam,
-		          purus sit.
-		        </p>
-		      </div>
-		      {/* Features Item */}
-		      <div className="grid gap-6 rounded-md border border-solid border-gray-300 p-8 md:p-10">
-		        <img src="https://firebasestorage.googleapis.com/v0/b/flowspark-1f3e0.appspot.com/o/Tailspark%20Images%2FPlaceholder%20Image.svg?alt=media&token=375a1ea3-a8b6-4d63-b975-aac8d0174074" alt="" className="inline-block h-16 w-16 object-cover rounded-full " />
-		        <h3 className="text-xl font-semibold">Organise</h3>
-		        <p className="text-sm text-gray-500">
-		          Lorem ipsum dolor sit amet consectetur adipiscing elit ut aliquam,
-		          purus sit.
-		        </p>
-		      </div>
-		      {/* Features Item */}
-		      <div className="grid gap-6 rounded-md border border-solid border-gray-300 p-8 md:p-10">
-		        <img src="https://firebasestorage.googleapis.com/v0/b/flowspark-1f3e0.appspot.com/o/Tailspark%20Images%2FPlaceholder%20Image.svg?alt=media&token=375a1ea3-a8b6-4d63-b975-aac8d0174074" alt="" className="inline-block h-16 w-16 object-cover rounded-full " />
-		        <h3 className="text-xl font-semibold">Flexibility</h3>
-		        <p className="text-sm text-gray-500">
-		          Lorem ipsum dolor sit amet consectetur adipiscing elit ut aliquam,
-		          purus sit.
-		        </p>
-		      </div>
-		      {/* Features Item */}
-		      <div className="grid gap-6 rounded-md border border-solid border-gray-300 p-8 md:p-10">
-		        <img src="https://firebasestorage.googleapis.com/v0/b/flowspark-1f3e0.appspot.com/o/Tailspark%20Images%2FPlaceholder%20Image.svg?alt=media&token=375a1ea3-a8b6-4d63-b975-aac8d0174074" alt="" className="inline-block h-16 w-16 object-cover rounded-full " />
-		        <h3 className="text-xl font-semibold">Speed</h3>
-		        <p className="text-sm text-gray-500">
-		          Lorem ipsum dolor sit amet consectetur adipiscing elit ut aliquam,
-		          purus sit.
-		        </p>
-		      </div>
-		      {/* Features Item */}
-		      <div className="grid gap-6 rounded-md border border-solid border-gray-300 p-8 md:p-10">
-		        <img src="https://firebasestorage.googleapis.com/v0/b/flowspark-1f3e0.appspot.com/o/Tailspark%20Images%2FPlaceholder%20Image.svg?alt=media&token=375a1ea3-a8b6-4d63-b975-aac8d0174074" alt="" className="inline-block h-16 w-16 object-cover rounded-full " />
-		        <h3 className="text-xl font-semibold">Quality</h3>
-		        <p className="text-sm text-gray-500">
-		          Lorem ipsum dolor sit amet consectetur adipiscing elit ut aliquam,
-		          purus sit.
-		        </p>
-		      </div>
-		      {/* Features Item */}
-		      <div className="grid gap-6 rounded-md border border-solid border-gray-300 p-8 md:p-10">
-		        <img src="https://firebasestorage.googleapis.com/v0/b/flowspark-1f3e0.appspot.com/o/Tailspark%20Images%2FPlaceholder%20Image.svg?alt=media&token=375a1ea3-a8b6-4d63-b975-aac8d0174074" alt="" className="inline-block h-16 w-16 object-cover rounded-full " />
-		        <h3 className="text-xl font-semibold">Resource</h3>
-		        <p className="text-sm text-gray-500">
-		          Lorem ipsum dolor sit amet consectetur adipiscing elit ut aliquam,
-		          purus sit.
-		        </p>
-		      </div>
-		    </div>
-		  </div>
+      <div>
+        <LandingFaq darkAndLight={darkAndLight}></LandingFaq>
+      </div>
 
-     </div>
+      <div className="flex mt-12 justify-center text-[13px] select-none">
+        © NoteStack. All rights reserved.
+      </div>
 
+      {videoModalOpen && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-75"
+          onClick={() => setVideoModalOpen(false)}
+        >
+          <div
+            className="relative w-full max-w-4xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Close button */}
+            <button
+              onClick={() => setVideoModalOpen(false)}
+              className="absolute -bottom-14   right-0 cursor-pointer text-white font-medium tracking-wide rounded-md px-3 py-1 bg-[#fe523b] hover:bg-[#fe523be8] transition-colors "
+            >
+              Close
+              {/* <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg> */}
+            </button>
 
-
+            {/* Video container with responsive aspect ratio */}
+            <div
+              className="relative w-full"
+              style={{ paddingBottom: "56.25%" }}
+            >
+              <iframe
+                className="absolute top-0 left-0 w-full h-full rounded-lg"
+                src="https://www.youtube.com/embed/_--kFKvCIgI?si=hqCQ0_OS-SwlI5Qe"
+                title="YouTube video player"
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerPolicy="strict-origin-when-cross-origin"
+                allowFullScreen
+              />
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
