@@ -38,7 +38,7 @@ const SignUp = () => {
         />
       </div>
       
-      {/* login */}
+      {/* sign up */}
       <div className="left w-[90%] sm:w-[80%] md:w-[60%] lg:w-[40%] xl:w-[25%] h-auto sm:h-[58%] p-5 px-6 sm:px-13 py-6 rounded-md border-[#fe523b] z-30">
         <h1 className="text-center text-2xl font-medium">Sign up</h1>
 
