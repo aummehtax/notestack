@@ -1,6 +1,8 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { FileText, FolderTree, Zap, Cloud, Lock, Search } from "lucide-react";
 import LandingFaq from "./LandingFaq";
+import { useDispatch, useSelector } from "react-redux";
+import { toggleTheme } from "../redux/slices/themeSlice";
 
 const navigation = [
   { name: "Features", href: "#features" },
@@ -49,16 +51,14 @@ const features = [
 
 export default function Example() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [darkAndLight, setDarkAndLight] = useState(() => {
-    //initialize from localstorage on first render
-    const saved = localStorage.getItem("darkMode");
-    return saved !== null ? saved === "true" : true;
-  });
   const [videoModalOpen, setVideoModalOpen] = useState(false);
 
-  useEffect(() => {
-    localStorage.setItem("darkMode", darkAndLight.toString());
-  }, [darkAndLight]);
+  const darkAndLight = useSelector((state) => state.theme.darkMode)
+  const dispatch = useDispatch()
+  
+  let handleTheme = () => {
+    dispatch(toggleTheme())
+  }
 
   return (
     <div
@@ -154,9 +154,7 @@ export default function Example() {
             ))}
 
             <div
-              onClick={() => {
-                setDarkAndLight(!darkAndLight);
-              }}
+              onClick={handleTheme}
               className="cursor-pointer"
             >
               {darkAndLight ? (
@@ -295,7 +293,7 @@ export default function Example() {
                     ))}
 
                     <div
-                      onClick={() => setDarkAndLight(!darkAndLight)}
+                      onClick={handleTheme}
                       className="cursor-pointer"
                     >
                       {darkAndLight ? (
